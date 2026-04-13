@@ -30,7 +30,7 @@ async def on_message(message: discord.Message):
 
     if message.content.lower() == 'salut':
         channel = message.channel
-        await channel.send("salut")
+        await channel.send("Salut")
 
 @bot.tree.command(name="instagram", description=("Affiche mon Instagram"))
 async def instagram(interaction: discord.Interaction):
