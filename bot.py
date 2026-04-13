@@ -52,6 +52,11 @@ async def test(interaction: discord.Interaction):
 
     await interaction.response.send_message(embed=embed)
 
+
+#######################################################################################
+############################### COMMANDES DE MODERATION ###############################
+#######################################################################################
+
 @bot.tree.command(name="warn", description=("Averti un utilisateur"))
 async def warn(interaction: discord.Interaction, member: discord.Member):
     await interaction.response.send_message("Avertissement envoyé.")
