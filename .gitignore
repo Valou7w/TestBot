@@ -1,4 +1,4 @@
 .env
 myenv/
-key
-key.pub
+env_key
+env_key.pub
