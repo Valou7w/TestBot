@@ -56,6 +56,12 @@ async def test(interaction: discord.Interaction):
 async def warn(interaction: discord.Interaction, member: discord.Member):
     await interaction.response.send_message("Avertissement envoyé.")
     await member.send("Ceci est un avertissement, calme toi s'il te plait.")
+
+@bot.tree.command(name="ban", description=("Banni un utilisateur"))
+async def warn(interaction: discord.Interaction, member: discord.Member):
+    await interaction.response.send_message("Ban executé.")
+    await member.send("Tu as été banni.")
+    await member.ban
     
 
 
