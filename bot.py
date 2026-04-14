@@ -67,10 +67,10 @@ async def warn(interaction: discord.Interaction, member: discord.Member):
     await interaction.response.send_message(f"{member} a été banni.")
     await member.send("Tu as été banni.")
     await member.ban()
-    
-
-
-
+ 
+@bot.tree.command(name="clear", description=("Supprime les 10 derniers messages"))
+async def clear(ctx, amount: int = 10):
+    await ctx.channel.purge(limit = amount)
 
 
 
