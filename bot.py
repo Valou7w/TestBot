@@ -64,26 +64,40 @@ async def testembed(interaction: discord.Interaction):
 
     await interaction.response.send_message(embed=embed)
 
-
 #######################################################################################
 #                               Commandes de moderation                               #
 #######################################################################################
 
+#Commande /clear
+@bot.tree.command(name="clear", description=("Supprime autant de messages que défini (par defaut : 10)"))
+@discord.app_commands.default_permissions(manage_messages=True)
+async def clear(interaction: discord.Interaction, amount: int = 10):
+    await interaction.response.send_message(f"{amount} messages ont été supprimés.", ephemeral=True)
+    await interaction.channel.purge(limit = amount)
+
+# Commande /warn
 @bot.tree.command(name="warn", description=("Averti un utilisateur"))
+@discord.app_commands.default_permissions(manage_messages=True)
 async def warn(interaction: discord.Interaction, member: discord.Member):
     await interaction.response.send_message(f"Avertissement envoyé à {member}", ephemeral=True)
     await member.send("Ceci est un avertissement, calme toi s'il te plait.")
 
+# Commande /kick
+@bot.tree.command(name="kick", description=("Expulse un utilisateur"))
+@discord.app_commands.default_permissions(ban_members=True)
+async def kick(interaction: discord.Interaction, member: discord.Member):
+    await interaction.response.send_message(f"{member} a été expulsé.", ephemeral=True)
+    await member.send("Tu as été expulsé.")
+    await member.kick()
+
+# Commande /ban
 @bot.tree.command(name="ban", description=("Banni un utilisateur"))
-async def warn(interaction: discord.Interaction, member: discord.Member):
+@discord.app_commands.default_permissions(ban_members=True)
+async def ban(interaction: discord.Interaction, member: discord.Member):
     await interaction.response.send_message(f"{member} a été banni.", ephemeral=True)
     await member.send("Tu as été banni.")
     await member.ban()
  
-@bot.tree.command(name="clear", description=("Supprime autant de messages que défini (par defaut : 10)"))
-async def clear(interaction: discord.Interaction, amount: int = 10):
-    await interaction.response.send_message(f"{amount} messages ont été supprimés.", ephemeral=True)
-    await interaction.channel.purge(limit = amount)
 
 
 
