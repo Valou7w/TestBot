@@ -22,7 +22,7 @@ async def on_ready():
         print(e)
 
 #######################################################################################
-#                           Réaction a un message specifique                          #
+#                          Réaction a un evenement specifique                         #
 #######################################################################################
 
 @bot.event
@@ -30,25 +30,30 @@ async def on_ready():
 async def on_message(message: discord.Message):
     if message.author.bot:
         return
-    
-# Le bot répond au message "bienvenue" dans le channel "1492876792090857583"
-    if message.content.lower() == "bienvenue":
-        welcome_channel = bot.get_channel(1492876792090857583)
-        await welcome_channel.send("Bienvenue chez DEDSEC")
 
 # Le bot répond au message "salut" dans le channel d'envoi du message
     if message.content.lower() == "salut":
         channel = message.channel
         await channel.send("Salut")
 
+@bot.event
+async def on_member_join(member):
+        role = discord.utils.get(member.guild.roles, name="Membre")
+        await member.add_roles(role)
+        welcome_channel = bot.get_channel(1494674270108913794)
+        await welcome_channel.send(f"Bienvenue chez DEDSEC {member} !")
+    
+
 #######################################################################################
 #                 Commandes de test a supprimer ou modifier plus tard                 #
 #######################################################################################
 
+# Commande /instagram
 @bot.tree.command(name="instagram", description=("Affiche mon Instagram"))
 async def instagram(interaction: discord.Interaction):
     await interaction.response.send_message("Voici mon Instagram : https://www.instagram.com/valou7w/")
 
+# Commande /testembed
 @bot.tree.command(name="testembed", description=("Commande de test pour les messages de type 'embed'."))
 async def testembed(interaction: discord.Interaction):
     embed = discord.Embed(
@@ -64,6 +69,19 @@ async def testembed(interaction: discord.Interaction):
 
     await interaction.response.send_message(embed=embed)
 
+# Commande /reseaux
+@bot.tree.command(name="reseaux", description=("Affiche les reseaux du créateur."))
+async def testembed(interaction: discord.Interaction):
+    embed = discord.Embed(
+        title="Reseaux de Whitedream",
+        color=discord.Color.blurple()
+    )
+    embed.add_field(name="Instagram", value="https://www.instagram.com/valou7w/", inline=False)
+    embed.add_field(name="Discord", value="whitedream_", inline=False)
+    embed.add_field(name="Steam", value="https://steamcommunity.com/profiles/76561199055041812/", inline=False)
+
+    await interaction.response.send_message(embed=embed, ephemeral=True)
+
 #######################################################################################
 #                               Commandes de moderation                               #
 #######################################################################################
@@ -72,21 +90,36 @@ async def testembed(interaction: discord.Interaction):
 @bot.tree.command(name="clear", description=("Supprime autant de messages que défini (par defaut : 10)"))
 @discord.app_commands.default_permissions(manage_messages=True)
 async def clear(interaction: discord.Interaction, amount: int = 10):
-    await interaction.response.send_message(f"{amount} messages ont été supprimés.", ephemeral=True)
+    embed = discord.Embed(
+        title=f"{amount} messages ont été supprimés.",
+        color=discord.Color.blurple()
+    )
+
+    await interaction.response.send_message(embed=embed, ephemeral=True)
     await interaction.channel.purge(limit = amount)
 
 # Commande /warn
 @bot.tree.command(name="warn", description=("Averti un utilisateur"))
 @discord.app_commands.default_permissions(manage_messages=True)
 async def warn(interaction: discord.Interaction, member: discord.Member):
-    await interaction.response.send_message(f"Avertissement envoyé à {member}", ephemeral=True)
+    embed = discord.Embed(
+        title=f"Avertissement envoyé à {member}",
+        color=discord.Color.blurple()
+    )
+
+    await interaction.response.send_message(embed=embed, ephemeral=True)
     await member.send("Ceci est un avertissement, calme toi s'il te plait.")
 
 # Commande /kick
 @bot.tree.command(name="kick", description=("Expulse un utilisateur"))
 @discord.app_commands.default_permissions(ban_members=True)
 async def kick(interaction: discord.Interaction, member: discord.Member):
-    await interaction.response.send_message(f"{member} a été expulsé.", ephemeral=True)
+    embed = discord.Embed(
+        title=f"{member} a été expulsé.",
+        color=discord.Color.blurple()
+    )
+
+    await interaction.response.send_message(embed=embed, ephemeral=True)
     await member.send("Tu as été expulsé.")
     await member.kick()
 
@@ -94,7 +127,12 @@ async def kick(interaction: discord.Interaction, member: discord.Member):
 @bot.tree.command(name="ban", description=("Banni un utilisateur"))
 @discord.app_commands.default_permissions(ban_members=True)
 async def ban(interaction: discord.Interaction, member: discord.Member):
-    await interaction.response.send_message(f"{member} a été banni.", ephemeral=True)
+    embed = discord.Embed(
+        title=f"{member} a été banni.",
+        color=discord.Color.blurple()
+    )
+
+    await interaction.response.send_message(embed=embed, ephemeral=True)
     await member.send("Tu as été banni.")
     await member.ban()
  
